@@ -1,0 +1,22 @@
+Package: hdpExtra
+Type: Package
+Title: An uncertainty-aware extension of the hdp package for mutational signatures
+Version: 0.1.0
+Author: Victor Velasco-Pardo
+Maintainer: Victor Velasco-Pardo <vvp1@st-andrews.ac.uk>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    coda,
+    ggmcmc,
+    ggplot2,
+    grDevices,
+    hdp,
+    Matrix,
+    MCMCpack,
+    methods,
+    salso
+RoxygenNote: 7.2.0

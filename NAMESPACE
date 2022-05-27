@@ -1,0 +1,5 @@
+export(hdpExtra_posterior)
+export(hdp_postprocessing)
+export(hdp_plot_sig_uncertainty)
+importClassesFrom(Matrix,dgCMatrix)
+useDynLib(hdpExtra,hdpMultinomial_iterate)
