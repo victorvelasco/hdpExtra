@@ -2,7 +2,6 @@
 ##### Not to be built into the package.
 
 library(hdp)
-library(hdpExtra)
 library(coda)
 
 dim(mut_count)

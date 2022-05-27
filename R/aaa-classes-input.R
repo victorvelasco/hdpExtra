@@ -1,5 +1,4 @@
 #' hdpBase class for the base distribution
-#' @export
 #'
 #' @slot hh parameters for base Dirichlet distribution (pseudocounts)
 #' @slot classqq overall count matrix for data items of each category (rows) in each cluster (columns)
@@ -28,7 +27,6 @@ setClass("hdpBase",
 
 
 #' hdpConparam class for the DP concentration parameter/s
-#' @export
 #'
 #' @slot alphaa shape parameter for the gamma prior over alpha
 #' @slot alphab rate parameter for the gamma prior over alpha
@@ -63,7 +61,6 @@ setClass("hdpConparam",
 #'
 #' note that the 'items' in parent nodes are the tables of their children
 #'
-#' @export
 #'
 #' @slot datacc cluster index for each data item
 #' @slot classnd number of items assigned to each cluster in this DP
@@ -112,7 +109,6 @@ setClass("hdpDP",
 #' @slot initcc number of initial clusters
 #' @slot seed_activate random seed used to initiate cluster membership
 #' @slot pseudoDP (Optional) index of pseudodata nodes (only if initialised via hdp_prior_init)
-#' @export
 setClass("hdpState",
          slots = list(
            numdp = "integer",

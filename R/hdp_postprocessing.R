@@ -5,8 +5,7 @@
 #' @param allocations_best A vector of length N containing a representative partition
 #' @param alpha The probability coverage of the intervals (by default 0.95)
 #' @return Point estimates of the parameters characterising a representative partition
-#' @xport
-#' (according to)
+#' @export
 hdp_postprocessing <- function(allocations, Phi, allocations_best, alpha = 0.95) {
 
   V <- nrow(Phi[[1]]) # Number of categories

@@ -3,7 +3,6 @@
 #' @describeIn hdpBase convert to list class
 #' @param x Object of class hdpBase
 #' @param ... unused
-#' @export
 setMethod("as.list",
           signature = "hdpBase",
           definition = function(x, ...) {
@@ -40,7 +39,6 @@ setMethod("show",
 # Generics for hdpConparam class -------------
 
 #' @describeIn hdpConparam convert to list class
-#' @export
 #' @param x Object of class hdpConparam
 #' @param ... unused
 setMethod("as.list",
@@ -85,7 +83,6 @@ setMethod("show",
 # Generics for hdpDP class -------------
 
 #' @describeIn hdpDP convert to list class
-#' @export
 #' @param x Object of class hdpDP
 #' @param ... unused
 setMethod("as.list",
@@ -137,7 +134,6 @@ setMethod("show",
 setGeneric("numdata", function(x, ...) standardGeneric("numdata"))
 #' @describeIn hdpDP Get number of data items at this DP.
 #' @aliases numdata
-#' @export
 setMethod("numdata",
           signature = "hdpDP",
           definition = function(x, ...) {
@@ -148,7 +144,6 @@ setMethod("numdata",
 # Generics for hdpState class -------------
 
 #' @describeIn hdpState Convert to list class
-#' @export
 #' @param x Object of class hdpState
 #' @param ... unused
 setMethod("as.list",
@@ -233,7 +228,6 @@ setMethod("show",
 setGeneric("numdp", function(x, ...) standardGeneric("numdp"))
 #' @describeIn hdpState Get number of DPs
 #' @aliases numdp
-#' @export
 setMethod("numdp",
           signature = "hdpState",
           definition = function(x, ...) {
@@ -244,7 +238,6 @@ setMethod("numdp",
 setGeneric("numconparam", function(x, ...) standardGeneric("numconparam"))
 #' @describeIn hdpState Get number of concentration parameters
 #' @aliases numconparam
-#' @export
 setMethod("numconparam",
           signature = "hdpState",
           definition = function(x, ...) {
@@ -255,7 +248,6 @@ setMethod("numconparam",
 setGeneric("base", function(x, ...) standardGeneric("base"))
 #' @describeIn hdpState Get base distribution
 #' @aliases base
-#' @export
 setMethod("base",
           signature = "hdpState",
           definition = function(x, ...) {
@@ -266,7 +258,6 @@ setMethod("base",
 setGeneric("conparam", function(x, ...) standardGeneric("conparam"))
 #' @describeIn hdpState Get list of concentration parameters
 #' @aliases conparam
-#' @export
 setMethod("conparam",
           signature = "hdpState",
           definition = function(x, ...) {
@@ -277,7 +268,6 @@ setMethod("conparam",
 setGeneric("dp", function(x, ...) standardGeneric("dp"))
 #' @describeIn hdpState Get list of DP nodes
 #' @aliases dp
-#' @export
 setMethod("dp",
           signature = "hdpState",
           definition = function(x, ...) {
@@ -288,7 +278,6 @@ setMethod("dp",
 setGeneric("dpstate", function(x, ...) standardGeneric("dpstate"))
 #' @describeIn hdpState Get state of every DP
 #' @aliases dpstate
-#' @export
 setMethod("dpstate",
           signature = "hdpState",
           definition = function(x, ...) {
@@ -299,7 +288,6 @@ setMethod("dpstate",
 setGeneric("ppindex", function(x, ...) standardGeneric("ppindex"))
 #' @describeIn hdpState Get parent process index of every DP
 #' @aliases ppindex
-#' @export
 setMethod("ppindex",
           signature = "hdpState",
           definition = function(x, ...) {
@@ -310,7 +298,6 @@ setMethod("ppindex",
 setGeneric("cpindex", function(x, ...) standardGeneric("cpindex"))
 #' @describeIn hdpState Get concentration parameter index of every DP
 #' @aliases cpindex
-#' @export
 setMethod("cpindex",
           signature = "hdpState",
           definition = function(x, ...) {
@@ -321,7 +308,6 @@ setMethod("cpindex",
 setGeneric("numcateg", function(x, ...) standardGeneric("numcateg"))
 #' @describeIn hdpState Get number of data categories
 #' @aliases numcateg
-#' @export
 setMethod("numcateg",
           signature = "hdpState",
           definition = function(x, ...) {
@@ -332,7 +318,6 @@ setMethod("numcateg",
 setGeneric("base_params", function(x, ...) standardGeneric("base_params"))
 #' @describeIn hdpState Get parameters of the base Dirichlet distribution (like psuedocounts across categories).
 #' @aliases base_params
-#' @export
 setMethod("base_params",
           signature = "hdpState",
           definition = function(x, ...) {
@@ -343,7 +328,6 @@ setMethod("base_params",
 setGeneric("activating_seed", function(x, ...) standardGeneric("activating_seed"))
 #' @describeIn hdpState Get seed used to initialse clustering
 #' @aliases activating_seed
-#' @export
 setMethod("activating_seed",
           signature = "hdpState",
           definition = function(x, ...) {
@@ -355,7 +339,6 @@ setGeneric("pseudoDP", function(x, ...) standardGeneric("pseudoDP"))
 #' @describeIn hdpState Get index of frozen pseudo-data DP nodes for prior info
 #'  (only if initialised via hdp_prior_init)
 #' @aliases pseudoDP
-#' @export
 setMethod("pseudoDP",
           signature = "hdpState",
           definition = function(x, ...) {
