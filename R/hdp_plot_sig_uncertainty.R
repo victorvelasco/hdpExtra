@@ -2,8 +2,9 @@ channels <- c("ACAA", "ACAC", "ACAG", "ACAT", "CCAA", "CCAC", "CCAG", "CCAT", "G
 
 #' Plots point estimates and credible intervals of mutational
 #'
-#' @param chains An HdpSampleMulti object
-#' @param Z A vector of length N containing
+#' @param Phi A 3D array of dimension V x K x S, where
+#' V is the number of categories, K is the number of clusters (signatures) and
+#' S is the number of posterior samples
 #' @param dst The path of a directory where the signatures will be stored the allocation variables of N observations.
 #'
 #' @export
