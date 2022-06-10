@@ -1,28 +1,11 @@
-#' Posterior sampling chain across activated DPs.
+#' An extended version of hdp::hdp_posterior
 #'
-#' Run a Gibbs sampler over the activated DP nodes of a Hierarchichal Dirichlet Process.
-#' Each iteration re-assigns the cluster allocation of every data item.
-#' Run \code{burnin} iterations, and then collect \code{n} samples from the chain
-#' with \code{space} iterations between each collected sample. To plot output,
-#' see \code{\link{plot_lik}}, \code{\link{plot_numcluster}}, and
-#' \code{\link{plot_data_assigned}}. Can collect multiple
-#' independent HDP sampling chains in a hdpSampleMulti object via \code{\link{hdp_multi_chain}}.
-#' Components are extracted via \code{\link{hdp_extract_components}}.
+#' An extended version of hdp::hdp_posterior implementing the Gibbs
+#' sampler described in Teh et al 2006. Our version provides draws from the
+#' distribution over allocation variables and signature parameters.
 #'
-#' @param hdp A hdpState object
-#' @param burnin The number of burn-in iterations.
-#' @param n The number of posterior samples to collect.
-#' @param space The number of iterations between collected samples.
-#' @param cpiter The number of iterations of concentration parameter sampling to perform after each iteration.
-#' @param seed The (integer) seed that can be set to reproduce output. Default is a
-#'  random seed from 1 -- 10^7, reported in the output.
-#' @param verbosity Verbosity of debugging statements.
-#'  0 (least verbose) -- 4 (most verbose). 0 highly recommended - only change for debugging small examples.
-#' @return A hdpSampleChain object with the salient information from each
-#'  posterior sample. See \code{\link{hdpSampleChain-class}}
-#' @seealso \code{\link{hdp_multi_chain}}, \code{\link{hdp_extract_components}},
-#'  \code{\link{cull_posterior_samples}}, \code{\link{plot_lik}}, \code{\link{plot_numcluster}},
-#'  \code{\link{plot_data_assigned}}
+#' @inheritParams hdp::hdp_posterior
+#'
 #' @importClassesFrom Matrix dgCMatrix
 #' @export
 #' @examples
@@ -152,6 +135,8 @@ hdpExtra_posterior <- function(hdp, burnin, n, space, cpiter=1,
 
   # check validity and return
   if (!validObject(ans)) warning("Not a valid hdpSampleChain object.")
-  ans <- list(chains = ans, allocations = allocations, Phi = Phi)
+  ### ans <- list(chains = ans, allocations = allocations, Phi = Phi)
+  ### return(ans)
+  ans <- new("HdpExtraChain", hdpChain = ans, allocations = allocations, Phi = Phi)
   return(ans)
 }

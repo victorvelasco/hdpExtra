@@ -3,6 +3,7 @@
 
 library(hdp)
 library(coda)
+library(salso)
 
 dim(mut_count)
 M <- mut_count[1:10, ]
@@ -23,27 +24,24 @@ hdp_mut <- hdp_setdata(hdp_mut,
 
 hdp_mut
 
-chlist <- vector("list", 4)
-allocations <- matrix(-1, nrow = sum(M), ncol = 0)
-Phi <- list()
+hdp_extra_chains <- vector("list", 4)
 for (i in 1:4){
 
   # activate DPs, 10 initial components
   hdp_activated <- dp_activate(hdp_mut, 1:numdp(hdp_mut), initcc=10, seed=i*200)
 
-  posterior_draws <- hdpExtra_posterior(hdp_activated,
+  hdp_extra_chains[[i]] <- hdpExtra_posterior(hdp_activated,
                                burnin=50,
                                n=5,
                                space=200,
                                cpiter=3,
                                seed=i*1e3)
-  chlist[[i]] <- posterior_draws$chains
-  allocations <- cbind(allocations, posterior_draws$allocations)
-  Phi <- append(Phi, posterior_draws$Phi)
 }
 
-allocations_best <- salso::salso(t(allocations), loss = "binder", maxNClusters = 4)
-Phi_best <- hdp_postprocessing(allocations, Phi, allocations_best)
+hdp_extra_chains <- HdpExtraChainMulti(hdp_extra_chains)
+
+allocations_best <- salso(t(hdp_allocations(hdp_extra_chains)), loss = VI(a = 0.5))
+Phi_best <- hdp_postprocessing(hdp_extra_chains, allocations_best)
 hdp_plot_sig_uncertainty(Phi_best, "plots")
 
 class(Phi_best)

@@ -2,12 +2,12 @@ channels <- c("ACAA", "ACAC", "ACAG", "ACAT", "CCAA", "CCAC", "CCAG", "CCAT", "G
 
 #' Plots point estimates and credible intervals of mutational
 #'
-#' @param chains An object of class hdpSampleMulti
+#' @param chains An HdpSampleMulti object
 #' @param Z A vector of length N containing
 #' @param dst The path of a directory where the signatures will be stored the allocation variables of N observations.
 #'
 #' @export
-hdp_plot_sig_uncertainty <- function(Phi, dst) {
+hdp_plot_sig_uncertainty <- function(Phi, dst = NULL) {
 
   # Phi is an array of dimension 96 x K x S
   K <- dim(Phi)[2] # Number of signatures
@@ -17,7 +17,7 @@ hdp_plot_sig_uncertainty <- function(Phi, dst) {
   for(i in 1:K) {
     signatures <- coda::as.mcmc(t(Phi[,i,]))
     colnames(signatures) <- channels
-    png(paste0(dst, "/", "signature", i, ".png"), 1200, 300)
+    # png(paste0(dst, "/", "signature", i, ".png"), 1200, 300)
     sig_plot <- ggmcmc::ggs_caterpillar(
       ggmcmc::ggs(signatures, keep_original_order = TRUE),
       horizontal = FALSE,
@@ -26,7 +26,7 @@ hdp_plot_sig_uncertainty <- function(Phi, dst) {
       ggplot2::ggtitle(paste("Signature", i)) +
       ggplot2::theme(plot.title = ggplot2::element_text(size = 24), axis.text.y = ggplot2::element_text(size = 16))
     print(sig_plot)
-    dev.off()
+    # dev.off()
   }
 }
 

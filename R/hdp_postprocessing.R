@@ -1,12 +1,16 @@
-#' allocations is an N x S matrix, (N = number of mutations, S = number of posterior iterations)
+#' Posterior draws the parameters of the signatures in a representative partition
 #'
-#' @param allocations An N x S matrix
-#' @param Phi A list of S matrices. Each matrix of dimension V x K^(s)
+#' The posterior draws are stored in a 3D array of dimension V x K x S, where
+#' V is the number of categories, K is the number of clusters (signatures) and
+#' S is the number of posterior samples
+#' @param hdp_extra_chains An HdpExtraChainMulti object
 #' @param allocations_best A vector of length N containing a representative partition
-#' @param alpha The probability coverage of the intervals (by default 0.95)
-#' @return Point estimates of the parameters characterising a representative partition
+#' @return 3D array with posterior samples of the signatures the representative partition
 #' @export
-hdp_postprocessing <- function(allocations, Phi, allocations_best, alpha = 0.95) {
+hdp_postprocessing <- function(hdp_extra_chains, allocations_best) {
+
+  allocations <- hdp_allocations(hdp_extra_chains)
+  Phi <- hdp_signature_parameters(hdp_extra_chains)
 
   V <- nrow(Phi[[1]]) # Number of categories
   clabels <- unique(sort(allocations_best)) # Clusters in the partition allocations_best (indices)
@@ -24,15 +28,6 @@ hdp_postprocessing <- function(allocations, Phi, allocations_best, alpha = 0.95)
       )
     }
   }
-
-  #### Phi_best_summary <- array(-1,
-  ####                           c(V, 3, K),
-  ####                           list(NULL, c("median", "lower", "upper"), NULL))
-  #### for (k in 1:K) {
-  ####   for (v in 1:V) {
-  ####     Phi_best_summary[v, , k] <- quantile(Phi_best[v, k, ], c(0.5, (1-alpha)/2, (alpha+1)/2))
-  ####   }
-  #### }
 
   return(Phi_best)
 }

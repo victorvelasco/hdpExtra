@@ -2,7 +2,7 @@
 % Please edit documentation in R/hdpExtra_posterior.R
 \name{hdpExtra_posterior}
 \alias{hdpExtra_posterior}
-\title{Posterior sampling chain across activated DPs.}
+\title{An extended version of hdp::hdp_posterior}
 \usage{
 hdpExtra_posterior(
   hdp,
@@ -31,22 +31,8 @@ random seed from 1 -- 10^7, reported in the output.}
 \item{verbosity}{Verbosity of debugging statements.
 0 (least verbose) -- 4 (most verbose). 0 highly recommended - only change for debugging small examples.}
 }
-\value{
-A hdpSampleChain object with the salient information from each
- posterior sample. See \code{\link{hdpSampleChain-class}}
-}
 \description{
-Run a Gibbs sampler over the activated DP nodes of a Hierarchichal Dirichlet Process.
-Each iteration re-assigns the cluster allocation of every data item.
-Run \code{burnin} iterations, and then collect \code{n} samples from the chain
-with \code{space} iterations between each collected sample. To plot output,
-see \code{\link{plot_lik}}, \code{\link{plot_numcluster}}, and
-\code{\link{plot_data_assigned}}. Can collect multiple
-independent HDP sampling chains in a hdpSampleMulti object via \code{\link{hdp_multi_chain}}.
-Components are extracted via \code{\link{hdp_extract_components}}.
-}
-\seealso{
-\code{\link{hdp_multi_chain}}, \code{\link{hdp_extract_components}},
- \code{\link{cull_posterior_samples}}, \code{\link{plot_lik}}, \code{\link{plot_numcluster}},
- \code{\link{plot_data_assigned}}
+An extended version of hdp::hdp_posterior implementing the Gibbs
+sampler described in Teh et al 2006. Our version provides draws from the
+distribution over allocation variables and signature parameters.
 }

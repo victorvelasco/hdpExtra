@@ -4,16 +4,12 @@
 \alias{hdp_postprocessing}
 \title{allocations is an N x S matrix, (N = number of mutations, S = number of posterior iterations)}
 \usage{
-hdp_postprocessing(allocations, Phi, allocations_best, alpha = 0.95)
+hdp_postprocessing(hdp_extra_chains, allocations_best)
 }
 \arguments{
-\item{allocations}{An N x S matrix}
-
-\item{Phi}{A list of S matrices. Each matrix of dimension V x K^(s)}
+\item{hdp_extra_chains}{An object of class HdpExtraChainMulti}
 
 \item{allocations_best}{A vector of length N containing a representative partition}
-
-\item{alpha}{The probability coverage of the intervals (by default 0.95)}
 }
 \value{
 Point estimates of the parameters characterising a representative partition

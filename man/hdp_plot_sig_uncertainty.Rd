@@ -4,7 +4,7 @@
 \alias{hdp_plot_sig_uncertainty}
 \title{Plots point estimates and credible intervals of mutational}
 \usage{
-hdp_plot_sig_uncertainty(Phi, dst)
+hdp_plot_sig_uncertainty(Phi, dst = NULL)
 }
 \arguments{
 \item{dst}{The path of a directory where the signatures will be stored the allocation variables of N observations.}

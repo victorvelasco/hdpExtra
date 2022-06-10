@@ -1,0 +1,160 @@
+---
+title: "Quantifying uncertainty inmutational signare analyses with hdpExtra"
+author: "Víctor Velasco-Pardo"
+date: "Jun  e 2022"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Quantifying uncertainty in mutational signare analyses with hdpExtra}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8} 
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 9,
+  fig.height = 3
+)
+```
+
+```{r setup}
+library(hdp)
+library(hdpExtra)
+library(salso)
+
+set.seed(1)
+```
+
+# Extraction of mutational signatures
+
+## Matrix of mutation counts
+
+Our analysis starts with a matrix $M$ of mutation counts, whose element $M_{ij}$
+is the number of mutations of type $j$ in the $i$th patient. 
+
+Here, we illustrate the features of the package <tt>hdpExtra</tt> with a dataset
+of 41 glioblastoma patients contained in the PCAWG data bank. One of the 41
+samples contained in the dataset is hypermutated. For illustration purposes, 
+the dataframe is contained in the dataset counts_gbm.
+
+```{r}
+data("counts_gbm")
+dim(counts_gbm)
+tail(sort(colSums(counts_gbm)))
+```
+
+## Initialise the HDPM model (hdp package)
+
+We use the <tt>hdp</tt> package to initialise an objects necessary for making 
+inference with the Hierarchical Dirichlet Process:
+
+```{r}
+# initialise HDP
+hdp_mut <- hdp::hdp_init(ppindex = c(0, rep(1, each = ncol(counts_gbm))), # index of parental nodes
+                         cpindex = c(1, rep(2, each = ncol(counts_gbm))), # index of concentration param
+                         hh=rep(1, 96), # prior is uniform over the 96 mutation categories
+                         alphaa=rep(1, 2), # shape hyperparams for five different CPs
+                         alphab=rep(1, 2)) # rate hyperparams for five different CPs
+
+# add data to leaf nodes (one per cancer sample, in row order of mut_count)
+hdp_mut <- hdp::hdp_setdata(hdp_mut,
+                            dpindex = 2:numdp(hdp_mut), # index of nodes to add data to
+                            t(as.matrix(counts_gbm))) # input data (mutation counts, sample rows match up with specified dpindex)
+hdp_mut
+```
+
+  
+## Sampling from the posterior distribution
+
+We use a modified version of hdp_posterior to sample from the posterior distribution of $\{z, \phi\}$,
+where $z$ denote the allocation variables and $\phi$ denote the cluster/signature parameters. These are
+integrated out in the sampler provided in the package <tt>hdp</tt>.
+
+We initialise two chains, and we run 200 iterations in each of them. The first 100 iterations are discarded as
+burn-in, and one in every 10 other iterations is saved for inference. Thus, we save 20 draws from the
+posterior distribution. 
+
+```{r}
+chlist <- vector("list", 2)
+for (i in 1:2){
+
+  # activate DPs, 10 initial components
+  hdp_activated <- hdp::dp_activate(hdp_mut, 1:numdp(hdp_mut), initcc=10, seed=i*200)
+
+  chlist[[i]] <- hdpExtra_posterior(hdp_activated,
+                               burnin=1000,
+                               n=100,
+                               space=10,
+                               cpiter=3,
+                               seed=i*1e3)
+}
+```
+
+# Post-processing the posterior distribution
+
+Having obtained $S = 20$ draws from the posterior distribution, the challenging task is now
+to summarise the posterior distribution and to quantify the uncertainty around the reported
+parameters. To do so, we follow (Molitor et al. 2010) in choosing a "model averaging" approach s.t.
+
+* We aim to obtain a partition $z^{\text{best}}$ that represents the center of the posterior distibution.
+* For that chosen partition, we assess the uncertainty around the signature parameters. 
+
+## Obtaining a most representative partition with SALSO
+
+First, we construct the allocations matrix from the different chains:
+
+```{r}
+chlist <- HdpExtraChainMulti(chlist)
+```
+
+Provided with a matrix of dimension $N \times S$, where each column represents a partition of 
+the $N$ mutations, we aim to find the center of the distribution. 
+
+
+
+```{r}
+best_partition <- salso(t(hdp_allocations(chlist)), loss = VI(a = 0.5))
+table(best_partition)
+```
+
+Here is the table of exposures:
+
+```{r}
+J <- ncol(counts_gbm)# Number of patients
+K <- max(best_partition) # Number of clusters (signatures)
+
+nmuts <- colSums(counts_gbm)
+index_end <- cumsum(nmuts)
+index_beg <- c(0, index_end[1:(length(nmuts)-1)])+1
+names(index_beg) <- names(index_end)
+
+sort(table(best_partition), decreasing = TRUE)
+
+exposures <- matrix(0, nrow = J, ncol = K)
+rownames(exposures) <- colnames(counts_gbm)
+colnames(exposures) <- paste("Sig", 01:K)
+
+for (j in 1:J) {
+  patient_allocs <- table(best_partition[index_beg[j]:index_end[j]])
+  exposures[j, as.integer(names(patient_allocs))] <- unname(patient_allocs)
+}
+
+knitr::kable(exposures)
+```
+
+
+Now that we are provided with a best partition, we proceed to evaluate
+the uncertainty around that partition. To do so, we use the function 
+<tt>hdp_postprocessing</tt>:
+```{r}
+Phi_best <- hdpExtra::hdp_postprocessing(chlist, best_partition)
+dim(Phi_best)
+```
+
+Now we can plot the signatures: 
+
+```{r}
+hdp_plot_sig_uncertainty(Phi_best)
+```
+
