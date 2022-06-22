@@ -1,0 +1,44 @@
+library(hdp)
+library(salso)
+
+
+M <- read.csv("data/WES_TCGA.96.csv", header = TRUE, row.names = 1)
+M <- M[, startsWith(colnames(M), "CNS.GBM")] # Keep glioblastoma samples only
+M <- as.data.frame(t(as.matrix(M)))
+# initialise HDP
+hdp_mut <- hdp_init(ppindex = c(0, rep(1, each = nrow(M))), # index of parental nodes
+                    cpindex = c(1, rep(2, each = nrow(M))), # index of concentration param
+                    hh=rep(1, 96), # prior is uniform over the 96 mutation categories
+                    alphaa=rep(1, 2), # shape hyperparams for five different CPs
+                    alphab=rep(1, 2)) # rate hyperparams for five different CPs
+
+# add data to leaf nodes (one per cancer sample, in row order of mut_count)
+hdp_mut <- hdp_setdata(hdp_mut,
+                       dpindex = 2:numdp(hdp_mut), # index of nodes to add data to
+                       M) # input data (mutation counts, sample rows match up with specified dpindex)
+
+hdp_mut
+hdp_extra_chains <- vector("list", 4)
+for (i in 1:4){
+
+  # activate DPs, 10 initial components
+  hdp_activated <- dp_activate(hdp_mut, 1:numdp(hdp_mut), initcc=10, seed=i*200)
+
+  hdp_extra_chains[[i]] <- hdpExtra_posterior(hdp_activated,
+                               burnin=1000,
+                               n=100,
+                               space=100,
+                               cpiter=3,
+                               seed=i*1e3)
+}
+
+hdp_extra_chains <- HdpExtraChainMulti(hdp_extra_chains)
+
+allocations_best <- salso(t(hdp_allocations(hdp_extra_chains)), loss = VI(a = 1))
+
+allocations_best_binder <- salso(t(hdp_allocations(hdp_extra_chains)), loss = binder(a = 1))
+
+allocations_best_binder2 <- salso(t(hdp_allocations(hdp_extra_chains)), loss = binder(a = 2))
+
+Phi_best <- hdp_postprocessing(hdp_extra_chains, allocations_best)
+hdp_plot_sig_uncertainty(Phi_best, "plots")

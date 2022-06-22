@@ -41,7 +41,7 @@ the dataframe is contained in the dataset counts_gbm.
 ```{r}
 data("counts_gbm")
 dim(counts_gbm)
-tail(sort(colSums(counts_gbm)))
+tail(sort(colSums(counts_prost)))
 ```
 
 ## Initialise the HDPM model (hdp package)
@@ -60,7 +60,7 @@ hdp_mut <- hdp::hdp_init(ppindex = c(0, rep(1, each = ncol(counts_gbm))), # inde
 # add data to leaf nodes (one per cancer sample, in row order of mut_count)
 hdp_mut <- hdp::hdp_setdata(hdp_mut,
                             dpindex = 2:numdp(hdp_mut), # index of nodes to add data to
-                            t(as.matrix(counts_gbm))) # input data (mutation counts, sample rows match up with specified dpindex)
+                            as.data.frame(t(as.matrix(counts_gbm)))) # input data (mutation counts, sample rows match up with specified dpindex)
 hdp_mut
 ```
 

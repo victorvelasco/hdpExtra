@@ -20,7 +20,7 @@ hdp_mut <- hdp_init(ppindex = c(0, rep(1, nrow(M))), # index of parental nodes
 # add data to leaf nodes (one per cancer sample, in row order of mut_count)
 hdp_mut <- hdp_setdata(hdp_mut,
                        dpindex = 2:numdp(hdp_mut), # index of nodes to add data to
-                       M) # input data (mutation counts, sample rows match up with specified dpindex)
+                       as.data.frame(M)) # input data (mutation counts, sample rows match up with specified dpindex)
 
 hdp_mut
 
@@ -44,18 +44,4 @@ allocations_best <- salso(t(hdp_allocations(hdp_extra_chains)), loss = VI(a = 0.
 Phi_best <- hdp_postprocessing(hdp_extra_chains, allocations_best)
 hdp_plot_sig_uncertainty(Phi_best, "plots")
 
-class(Phi_best)
-dim(Phi_best)
 
-
-Phi_mcmc <- t(Phi_best[, 3, ])
-dimnames(Phi_mcmc) <- list(
-  NULL, channels
-)
-Phi_mcmc <- as.mcmc(Phi_mcmc)
-Phi_mcmc_list <- as.mcmc.list(Phi_mcmc)
-
-library(ggmcmc)
-
-
-tail(ggs(Phi_mcmc_list, family = "*"))

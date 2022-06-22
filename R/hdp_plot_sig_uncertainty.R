@@ -2,12 +2,14 @@ channels <- c("ACAA", "ACAC", "ACAG", "ACAT", "CCAA", "CCAC", "CCAG", "CCAT", "G
 
 #' Plots point estimates and credible intervals of mutational
 #'
-#' @param chains An HdpSampleMulti object
-#' @param Z A vector of length N containing
+#' @param Phi An array of size V x K x S, where V is the number of categories,
+#' K is the number of clusters in the best partition and S is the number of
+#' iterations of the MCMC sampler
 #' @param dst The path of a directory where the signatures will be stored the allocation variables of N observations.
 #'
 #' @export
 hdp_plot_sig_uncertainty <- function(Phi, dst = NULL) {
+if (!class())
 
   # Phi is an array of dimension 96 x K x S
   K <- dim(Phi)[2] # Number of signatures
