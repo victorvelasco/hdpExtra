@@ -2,18 +2,20 @@
 % Please edit documentation in R/hdp_postprocessing.R
 \name{hdp_postprocessing}
 \alias{hdp_postprocessing}
-\title{allocations is an N x S matrix, (N = number of mutations, S = number of posterior iterations)}
+\title{Posterior draws the parameters of the signatures in a representative partition}
 \usage{
 hdp_postprocessing(hdp_extra_chains, allocations_best)
 }
 \arguments{
-\item{hdp_extra_chains}{An object of class HdpExtraChainMulti}
+\item{hdp_extra_chains}{An HdpExtraChainMulti object}
 
 \item{allocations_best}{A vector of length N containing a representative partition}
 }
 \value{
-Point estimates of the parameters characterising a representative partition
+3D array with posterior samples of the signatures the representative partition
 }
 \description{
-allocations is an N x S matrix, (N = number of mutations, S = number of posterior iterations)
+The posterior draws are stored in a 3D array of dimension V x K x S, where
+V is the number of categories, K is the number of clusters (signatures) and
+S is the number of posterior samples
 }

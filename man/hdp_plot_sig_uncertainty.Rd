@@ -7,11 +7,11 @@
 hdp_plot_sig_uncertainty(Phi, dst = NULL)
 }
 \arguments{
+\item{Phi}{A 3D array of dimension V x K x S, where
+V is the number of categories, K is the number of clusters (signatures) and
+S is the number of posterior samples}
+
 \item{dst}{The path of a directory where the signatures will be stored the allocation variables of N observations.}
-
-\item{chains}{An object of class hdpSampleMulti}
-
-\item{Z}{A vector of length N containing}
 }
 \description{
 Plots point estimates and credible intervals of mutational

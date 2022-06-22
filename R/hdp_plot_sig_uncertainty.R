@@ -2,9 +2,15 @@ channels <- c("ACAA", "ACAC", "ACAG", "ACAT", "CCAA", "CCAC", "CCAG", "CCAT", "G
 
 #' Plots point estimates and credible intervals of mutational
 #'
+<<<<<<< HEAD
 #' @param Phi An array of size V x K x S, where V is the number of categories,
 #' K is the number of clusters in the best partition and S is the number of
 #' iterations of the MCMC sampler
+=======
+#' @param Phi A 3D array of dimension V x K x S, where
+#' V is the number of categories, K is the number of clusters (signatures) and
+#' S is the number of posterior samples
+>>>>>>> 545c7edfddcd7dc472197c2f03accfe9a050b68b
 #' @param dst The path of a directory where the signatures will be stored the allocation variables of N observations.
 #'
 #' @export
