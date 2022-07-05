@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 .DS_Store
+dev/output/*
 output/*
 src/*.o
 src/*.so
