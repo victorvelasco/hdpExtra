@@ -275,7 +275,7 @@ double hdp_likelihood(HDP *hdp) {
 } /* hdp_likelihood */
 
 /***************************************************************************/
-void hdp_randconparam(HDP *hdp, int numiter) {
+void hdp_randconparam(HDP *hdp, int numiter, double *result) {
   DP *alldp, *dp;
   CONPARAM *allconparam, *conparam;
   int numconparam, numdp, *dpstate, *cpindex;
@@ -308,6 +308,7 @@ void hdp_randconparam(HDP *hdp, int numiter) {
     if ( dpstate[jj] == ACTIVE ) {
       cp        = cpindex[jj];
       dp->alpha = allconparam[cp].alpha;
+      *(result + cp) = dp->alpha;
     }
   }
 }
@@ -502,7 +503,7 @@ void hdp_save_allocations(HDP *hdp, int *allocations) {
 
 /***************************************************************************/
 void hdp_iterate(HDP *hdp, double *iterlik,
-    int numiter, int doconparam, int dolik, int *allocations) {
+    int numiter, int numcp, int doconparam, int dolik, int *allocations, double *conparam) {
   BASE *base;
   QQ *classqq;
   DP *alldp;
@@ -535,7 +536,10 @@ void hdp_iterate(HDP *hdp, double *iterlik,
       if ( numitems(classqq[cc]) == 0 ) hdp_delclass(hdp,cc);
     }
 
-    if ( doconparam > 0 ) hdp_randconparam(hdp,doconparam);
+    if ( doconparam > 0 ) {
+      hdp_randconparam(hdp,doconparam, conparam);
+      conparam += numcp;
+    }
 
     if ( dolik == 1 ) iterlik[iter] = hdp_likelihood(hdp);
 
@@ -665,22 +669,22 @@ void hdp_dpholdout(HDP *hdp, int jj) {
   dpstate[jj] = HELDOUT;
 }
 
-void hdp_predict(HDP *hdp, double *lik, int numburnin, int numsample,
-    int numpredict, int *predictjj, int doconparam) {
-  int jj;
-
-
-  for ( jj = 0 ; jj < numpredict ; jj++ )
-    hdp_dpholdout(hdp,predictjj[jj]);
-  for ( jj = 0 ; jj < numpredict ; jj++ ) {
-    hdp_dpactivate(hdp,predictjj[jj]);
-    hdp_iterate(hdp, NULL, numburnin, doconparam, 0, NULL);
-    hdp_iterate(hdp, lik, numsample, doconparam, 1, NULL);
-    lik += numsample;
-    hdp_dpholdout(hdp,predictjj[jj]);
-  }
-  for ( jj = 0 ; jj < numpredict ; jj++ )
-    hdp_dpactivate(hdp,predictjj[jj]);
-
-}
+// void hdp_predict(HDP *hdp, double *lik, int numburnin, int numsample,
+//     int numpredict, int *predictjj, int doconparam) {
+//   int jj;
+// 
+// 
+//   for ( jj = 0 ; jj < numpredict ; jj++ )
+//     hdp_dpholdout(hdp,predictjj[jj]);
+//   for ( jj = 0 ; jj < numpredict ; jj++ ) {
+//     hdp_dpactivate(hdp,predictjj[jj]);
+//     hdp_iterate(hdp, NULL, numburnin, doconparam, 0, NULL);
+//     hdp_iterate(hdp, lik, numsample, doconparam, 1, NULL);
+//     lik += numsample;
+//     hdp_dpholdout(hdp,predictjj[jj]);
+//   }
+//   for ( jj = 0 ; jj < numpredict ; jj++ )
+//     hdp_dpactivate(hdp,predictjj[jj]);
+// 
+// }
 

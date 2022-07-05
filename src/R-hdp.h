@@ -29,7 +29,7 @@ int hdp_delclass(HDP *hdp, int cc);
 
 double hdp_likelihood(HDP *hdp);
 
-void hdp_randconparam(HDP *hdp, int numiter);
+void hdp_randconparam(HDP *hdp, int numiter, double *result);
 
 void hdp_randbeta(HDP *hdp, int jj);
 
@@ -41,13 +41,13 @@ void hdp_randdatacc(HDP *hdp, int jj);
 
 void hdp_save_allocations(HDP *hdp, int *allocations);
 
-void hdp_iterate(HDP *hdp, double *iterlik, int numiter, int doconparam, int dolik, int *allocations);
+void hdp_iterate(HDP *hdp, double *iterlik, int numiter, int numcp, int doconparam, int dolik, int *allocations, double *conparam);
 
 void hdp_dpactivate(HDP *hdp, int jj);
 
 void hdp_dpholdout(HDP *hdp, int jj);
 
-void hdp_predict(HDP *hdp, double *lik, int numburnin, int numsample, int numpredict, int *predictjj, int doconparam);
+// void hdp_predict(HDP *hdp, double *lik, int numburnin, int numsample, int numpredict, int *predictjj, int doconparam);
 
 #endif
 

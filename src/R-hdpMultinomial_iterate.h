@@ -5,7 +5,7 @@
 #include "R-hdp.h"
 
 
-SEXP hdpMultinomial_iterate(SEXP hdpin, SEXP numiter, SEXP doconparam, SEXP dolik, SEXP numallocs, SEXP dodebug);
+SEXP hdpMultinomial_iterate(SEXP hdpin, SEXP numiter, SEXP doconparam, SEXP dolik, SEXP numallocs, SEXP numcp, SEXP dodebug);
 
 
 

@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 .DS_Store
+output/*
 src/*.o
 src/*.so
 src/*.dll

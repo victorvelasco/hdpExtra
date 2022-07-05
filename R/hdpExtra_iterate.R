@@ -4,8 +4,8 @@
 # the vector of likelihoods for these iterations
 
 #' @useDynLib hdpExtra hdpMultinomial_iterate
-iterate <- function(hdplist, numiter, cpiter, allocations, verbosity){
+iterate <- function(hdplist, numiter, cpiter, allocations, numcp, verbosity){
   out <- .Call(hdpMultinomial_iterate, hdplist, numiter, cpiter,
-               dolik=1, allocations, verbosity, PACKAGE="hdpExtra")
+               dolik=1, allocations, numcp, verbosity, PACKAGE="hdpExtra")
   return(out)
 }

@@ -9,8 +9,12 @@
 setClass("HdpExtraChain",
   slots = c(
     hdpChain = "hdpSampleChain",
+    cp_values = "matrix",
     allocations = "matrix",
-    Phi = "list"
+    Phi = "list",
+    niter = "numeric",
+    burnin = "numeric",
+    thin = "numeric"
   )
 )
 
@@ -25,8 +29,12 @@ setClass("HdpExtraChain",
 setClass("HdpExtraChainMulti",
   slots = c(
     hdpChains = "hdpSampleMulti",
+    cp_values = "list",
     allocations = "matrix",
-    Phi = "list"
+    Phi = "list",
+    niter = "numeric",
+    burnin = "numeric",
+    thin = "numeric"
   )
 )
 
@@ -46,8 +54,13 @@ HdpExtraChainMulti <- function(hdpExtraChains) {
 
   new("HdpExtraChainMulti",
     hdpChains = hdp_multi_chain(lapply(1:length(hdpExtraChains), function(i) hdpExtraChains[[i]]@hdpChain)),
+    cp_values = lapply(hdpExtraChains,
+                  function(chain) coda::as.mcmc(chain@cp_values)),
     allocations = allocations,
-    Phi = Phi
+    Phi = Phi,
+    niter = sapply(hdpExtraChains, function(x) x@niter),
+    burnin = sapply(hdpExtraChains, function(x) x@burnin),
+    thin = sapply(hdpExtraChains, function(x) x@thin)
   )
 }
 
@@ -60,8 +73,8 @@ setMethod("hdp_chain", "HdpExtraChain", function(x) {
 })
 
 #' @export
-setMethod("hdp_chain", "HdpExtraChain", function(x) {
-  hdp_multi_chain(x@hdpChain)
+setMethod("hdp_chain", "HdpExtraChainMulti", function(x) {
+  hdp::chains(x@hdpChains)
 })
 
 #' @export

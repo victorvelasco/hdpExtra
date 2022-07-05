@@ -37,6 +37,8 @@ hdpExtra_posterior <- function(hdp, burnin, n, space, cpiter=1,
   totiter <- burnin + n * space
   lik     <- rep(0, totiter)
 
+  # initialise concentration parameters matrix
+  cp_values <- matrix(0, nrow = hdp::numconparam(hdp), ncol = totiter)
 
 
   # translate hdp hdpState (S4 class) to plain list so C code can parse
@@ -54,9 +56,10 @@ hdpExtra_posterior <- function(hdp, burnin, n, space, cpiter=1,
   Phi <- list()
 
   # run burn in iterations, update hdplist, fill in lik
-  output <- iterate(hdplist, burnin, cpiter, 0, verbosity)
+  output <- iterate(hdplist, burnin, cpiter, 0, hdp::numconparam(hdp), verbosity)
   hdplist <- output[[1]]
   lik[1:burnin] <- output[[2]]
+  cp_values[, 1:burnin] <- output[[3]]
 
 
 
@@ -72,10 +75,12 @@ hdpExtra_posterior <- function(hdp, burnin, n, space, cpiter=1,
   # collect n posterior samples
   for (samp in 1:n){
 
-    output <- iterate(hdplist, space, cpiter, N, verbosity)
+    output <- iterate(hdplist, space, cpiter, N, hdp::numconparam(hdp), verbosity)
     hdplist <- output[[1]]
     lik[burnin + (samp-1) * space + (1:space)] <- output[[2]]
-    allocations[, samp] <- output[[3]] + 1
+    cp_values[, burnin + (samp-1) * space + (1:space)] <- output[[3]]
+    allocations[, samp] <- output[[4]] + 1
+
     sample[[samp]] <- hdp_getstate(hdplist)
     Phi[[samp]] <- hdp_sample_cluster_params(hdplist$base$classqq)
 
@@ -130,6 +135,13 @@ hdpExtra_posterior <- function(hdp, burnin, n, space, cpiter=1,
   if (!validObject(ans)) warning("Not a valid hdpSampleChain object.")
   ### ans <- list(chains = ans, allocations = allocations, Phi = Phi)
   ### return(ans)
-  ans <- new("HdpExtraChain", hdpChain = ans, allocations = allocations, Phi = Phi)
+  ans <- new("HdpExtraChain",
+             hdpChain = ans,
+             cp_values = t(cp_values),
+             allocations = allocations,
+             Phi = Phi,
+             niter = totiter,
+             burnin = burnin,
+             thin = space)
   return(ans)
 }
