@@ -41,7 +41,7 @@ void hdp_randdatacc(HDP *hdp, int jj);
 
 void hdp_save_allocations(HDP *hdp, int *allocations);
 
-void hdp_iterate(HDP *hdp, double *iterlik, int numiter, int numcp, int doconparam, int dolik, int *allocations, double *conparam);
+void hdp_iterate(HDP *hdp, double *iterlik, int numiter, int numcp, int doconparam, int dolik, int *allocations, double *conparam, double *beta);
 
 void hdp_dpactivate(HDP *hdp, int jj);
 

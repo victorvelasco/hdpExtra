@@ -55,6 +55,9 @@ hdpExtra_posterior <- function(hdp, burnin, n, space, cpiter=1,
   # list to save samples of the cluster parameters (\phi_k in Teh et al. 2006)
   Phi <- list()
 
+  # list to save draws of the beta weights (\beta_k in Teh et al. 2006)
+  Beta <- list()
+
   # run burn in iterations, update hdplist, fill in lik
   output <- iterate(hdplist, burnin, cpiter, 0, hdp::numconparam(hdp), verbosity)
   hdplist <- output[[1]]
@@ -83,6 +86,7 @@ hdpExtra_posterior <- function(hdp, burnin, n, space, cpiter=1,
 
     sample[[samp]] <- hdp_getstate(hdplist)
     Phi[[samp]] <- hdp_sample_cluster_params(hdplist$base$classqq)
+    Beta[[samp]] <- output[[5]][1:(ncol(Phi[[samp]])+1)]
 
     #report time every 10 samples if > 1 min has passed
     tracktime <- Sys.time()
@@ -140,6 +144,7 @@ hdpExtra_posterior <- function(hdp, burnin, n, space, cpiter=1,
              cp_values = t(cp_values),
              allocations = allocations,
              Phi = Phi,
+             Beta = Beta,
              niter = totiter,
              burnin = burnin,
              thin = space)

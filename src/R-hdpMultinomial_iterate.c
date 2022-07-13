@@ -20,6 +20,8 @@ SEXP hdpMultinomial_iterate(SEXP hdpin, SEXP numiter, SEXP doconparam, SEXP doli
   SEXP LIK = PROTECT(allocVector(REALSXP, ni));
   SEXP CONPARAMETER = PROTECT(allocVector(REALSXP, ni*ncp));
 
+  SEXP BETA = PROTECT(allocVector(REALSXP, hdp->base->maxclass));
+
   SEXP ALLOCATIONS;
 
   if (nallocs > 0) {
@@ -29,26 +31,27 @@ SEXP hdpMultinomial_iterate(SEXP hdpin, SEXP numiter, SEXP doconparam, SEXP doli
   }
   rdebug0(1,"Running hdpMultinomial_iterate.\n");
   if (nallocs > 0) {
-    hdp_iterate(hdp, REAL(LIK), ni, ncp, docp, dl, INTEGER(ALLOCATIONS), REAL(CONPARAMETER));
+    hdp_iterate(hdp, REAL(LIK), ni, ncp, docp, dl, INTEGER(ALLOCATIONS), REAL(CONPARAMETER), REAL(BETA));
   } else {
-    hdp_iterate(hdp, REAL(LIK), ni, ncp, docp, dl, NULL, REAL(CONPARAMETER));
+    hdp_iterate(hdp, REAL(LIK), ni, ncp, docp, dl, NULL, REAL(CONPARAMETER), NULL);
   }
   rdebug0(1,"Finished hdpMultinomial_iterate.\n");
 
   SEXP hdpout = PROTECT(duplicate(hdpin));
   rWriteHDP(hdpout,hdp);
 
-  SEXP result = PROTECT(allocVector(VECSXP, 4));
+  SEXP result = PROTECT(allocVector(VECSXP, 5));
   SET_VECTOR_ELT(result, 0, hdpout);
   SET_VECTOR_ELT(result, 1, LIK);
   SET_VECTOR_ELT(result, 2, CONPARAMETER);
   SET_VECTOR_ELT(result, 3, ALLOCATIONS);
+  SET_VECTOR_ELT(result, 4, BETA);
 
 
   if (nallocs > 0) {
-    UNPROTECT(5);
+    UNPROTECT(6);
   } else {
-    UNPROTECT(4);
+    UNPROTECT(5);
   }
 
   PutRNGstate();

@@ -503,7 +503,7 @@ void hdp_save_allocations(HDP *hdp, int *allocations) {
 
 /***************************************************************************/
 void hdp_iterate(HDP *hdp, double *iterlik,
-    int numiter, int numcp, int doconparam, int dolik, int *allocations, double *conparam) {
+    int numiter, int numcp, int doconparam, int dolik, int *allocations, double *conparam, double *beta) {
   BASE *base;
   QQ *classqq;
   DP *alldp;
@@ -527,6 +527,10 @@ void hdp_iterate(HDP *hdp, double *iterlik,
     rdebug0(2,"\n");
     for ( jj = 0 ; jj < numdp ; jj++ ) {
       if ( dpstate[jj] == ACTIVE ) hdp_randbeta(hdp, jj);
+    }
+
+    if (beta != NULL) {
+      memcpy(beta, hdp->dp->beta, (hdp->base->numclass+1) * sizeof(double));
     }
 
     /* delete empty classes, only after randclassnt, randbeta for consistency */

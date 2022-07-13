@@ -12,6 +12,7 @@ setClass("HdpExtraChain",
     cp_values = "matrix",
     allocations = "matrix",
     Phi = "list",
+    Beta = "list",
     niter = "numeric",
     burnin = "numeric",
     thin = "numeric"
@@ -32,6 +33,7 @@ setClass("HdpExtraChainMulti",
     cp_values = "list",
     allocations = "matrix",
     Phi = "list",
+    Beta = "list",
     niter = "numeric",
     burnin = "numeric",
     thin = "numeric"
@@ -44,12 +46,14 @@ setClass("HdpExtraChainMulti",
 #' @param hdpExtraChains A list of objects of class HdpExtraChain
 #' @export
 HdpExtraChainMulti <- function(hdpExtraChains) {
-  allocations = hdpExtraChains[[1]]@allocations
-  Phi = hdpExtraChains[[1]]@Phi
+  allocations <- hdpExtraChains[[1]]@allocations
+  Phi <- hdpExtraChains[[1]]@Phi
+  Beta <- hdpExtraChains[[1]]@Beta
 
   for (i in 2:length(hdpExtraChains)) {
     allocations <- cbind(allocations, hdpExtraChains[[i]]@allocations)
     Phi <- append(Phi, hdpExtraChains[[i]]@Phi)
+    Beta <- append(Beta, hdpExtraChains[[i]]@Beta)
   }
 
   new("HdpExtraChainMulti",
@@ -58,6 +62,7 @@ HdpExtraChainMulti <- function(hdpExtraChains) {
                   function(chain) coda::as.mcmc(chain@cp_values)),
     allocations = allocations,
     Phi = Phi,
+    Beta = Beta,
     niter = sapply(hdpExtraChains, function(x) x@niter),
     burnin = sapply(hdpExtraChains, function(x) x@burnin),
     thin = sapply(hdpExtraChains, function(x) x@thin)
