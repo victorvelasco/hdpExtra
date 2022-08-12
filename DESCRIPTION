@@ -2,11 +2,15 @@ Package: hdpExtra
 Type: Package
 Title: An uncertainty-aware extension of the hdp package for mutational signatures
 Version: 0.1.0
-Author: Victor Velasco-Pardo
+# Author: Victor Velasco-Pardo
+Authors@R: c(
+    person("Victor", "Velasco-Pardo", email="vvp1@st-andrews.ac.uk", role=c("aut","cre")),
+    person("Nicola", "Roberts", role=c("aut","cph")),
+    person("Yee Whye", "Teh",   role=c("aut","cph")))
 Maintainer: Victor Velasco-Pardo <vvp1@st-andrews.ac.uk>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: An extension of the package hdp with functionality for uncertainty
+    quantification in de novo mutational signature analyses. 
+License: See file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
