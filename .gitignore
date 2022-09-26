@@ -4,6 +4,7 @@
 .Ruserdata
 .DS_Store
 dev/output/*
+dev/plots/*
 output/*
 src/*.o
 src/*.so
