@@ -2,7 +2,7 @@ Package: hdpExtra
 Type: Package
 Title: An uncertainty-aware extension of the hdp package for mutational signatures
 Version: 0.1.0
-# Author: Victor Velasco-Pardo
+#Author: Victor Velasco-Pardo
 Authors@R: c(
     person("Victor", "Velasco-Pardo", email="vvp1@st-andrews.ac.uk", role=c("aut","cre")),
     person("Nicola", "Roberts", role=c("aut","cph")),

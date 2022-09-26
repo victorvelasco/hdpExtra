@@ -2,6 +2,8 @@ channels <- c("ACAA", "ACAC", "ACAG", "ACAT", "CCAA", "CCAC", "CCAG", "CCAT", "G
 
 channels_dbs <- c("ACCA", "ACCG", "ACCT", "ACGA", "ACGG", "ACGT", "ACTA", "ACTG", "ACTT", "ATCA", "ATCC", "ATCG", "ATGA", "ATGC", "ATTA", "CCAA", "CCAG", "CCAT", "CCGA", "CCGG", "CCGT", "CCTA", "CCTG", "CCTT", "CGAT", "CGGC", "CGGT", "CGTA", "CGTC", "CGTT", "CTAA", "CTAC", "CTAG", "CTGA", "CTGC", "CTGG", "CTTA", "CTTC", "CTTG", "GCAA", "GCAG", "GCAT", "GCCA", "GCCG", "GCTA", "TAAT", "TACG", "TACT", "TAGC", "TAGG", "TAGT", "TCAA", "TCAG", "TCAT", "TCCA", "TCCG", "TCCT", "TCGA", "TCGG", "TCGT", "TGAA", "TGAC", "TGAT", "TGCA", "TGCC", "TGCT", "TGGA", "TGGC", "TGGT", "TTAA", "TTAC", "TTAG", "TTCA", "TTCC", "TTCG", "TTGA", "TTGC", "TTGG")
 
+dbs_colors <-c("#02bced","#0366cb","#a0ce62","#016502","#ff9899","#e22926","#feb066","#fd8000","#cb98fd","#4c0199")
+
 #' Plots point estimates and credible intervals of mutational
 #'
 #' @param Phi An array of size V x K x S, where V is the number of categories,
@@ -52,8 +54,10 @@ hdp_plot_sig_dbs_uncertainty <- function(Phi, dst = NULL) {
     sig_plot <- ggmcmc::ggs_caterpillar(
       ggmcmc::ggs(signatures, keep_original_order = TRUE),
       horizontal = FALSE,
-      sort = FALSE) + ggplot2::aes(color = as.factor(rep(1:6, each = 13))) +
-      ggplot2::scale_colour_manual(values = c("cyan", "black", "red", "grey", "green", "pink")) +
+      sort = FALSE,
+      thick_ci = c(0.025,0.975),
+      thin_ci = c(0.005,0.995)) + ggplot2::aes(color = as.factor(rep(1:10, c(9,6,9,6,9,6,6,9,9,9)))) +
+      ggplot2::scale_colour_manual(values = dbs_colors) +
       ggplot2::ggtitle(paste("Signature", i)) +
       ggplot2::theme(plot.title = ggplot2::element_text(size = 24), axis.text.y = ggplot2::element_text(size = 16))
     print(sig_plot)

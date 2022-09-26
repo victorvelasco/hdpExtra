@@ -2,6 +2,7 @@
 
 export(HdpExtraChainMulti)
 export(hdpExtra_posterior)
+export(hdpExtra_diagnostic_plots)
 export(hdp_allocations)
 export(hdp_chain)
 export(hdp_plot_sig_uncertainty)

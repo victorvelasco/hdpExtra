@@ -1,4 +1,4 @@
-library(dplyr) 
+library(dplyr)
 
 M <- read.table("data/ESCC_SBS96.txt", header = TRUE, row.names = 1) %>%
   as.matrix %>%
@@ -19,10 +19,7 @@ countries <- patient_country$country %>% unique
 ncountries <- length(countries)
 npatients <- nrow(M)
 
-salso_obj <- readRDS("output/escc/salso_VI23.rds")
-tail(salso_obj %>% table %>% sort, 20)
-
-salso_obj <- unclass(salso_obj)
+salso_obj <- readRDS("output/escc/salso_VI29.rds")
 
 J <- nrow(M)
 K <- max(salso_obj)
@@ -41,25 +38,25 @@ for (j in 1:J) {
   exposures[j, as.integer(names(patient_allocs))] <- unname(patient_allocs)
 }
 
-have_opium_sig <- c("PD39988a", 
-"PD40018a", 
-"PD40335a", 
-"PD42843a", 
-"PD40854a", 
-"PD40319a", 
-"PD43793a", 
-"PD39994a", 
-"PD40021a", 
-"PD39957a", 
-"PD39972a", 
-"PD40320a", 
-"PD39987a", 
-"PD40356a", 
-"PD39974a", 
-"PD40355a", 
-"PD39978a", 
-"PD39999a", 
-"PD42845a", 
+have_opium_sig <- c("PD39988a",
+"PD40018a",
+"PD40335a",
+"PD42843a",
+"PD40854a",
+"PD40319a",
+"PD43793a",
+"PD39994a",
+"PD40021a",
+"PD39957a",
+"PD39972a",
+"PD40320a",
+"PD39987a",
+"PD40356a",
+"PD39974a",
+"PD40355a",
+"PD39978a",
+"PD39999a",
+"PD42845a",
 "PD39983a")
 
 not_have_opium_sig <- c(
@@ -183,8 +180,68 @@ not_have_opium_sig <- c(
 "PD40013a",
 "PD40012a")
 
-knitr::kable(exposures[have_opium_sig, as.integer(rev(names(tail(salso_obj %>% table %>% sort, 20))))], "pipe")
+knitr::kable(exposures[have_opium_sig, as.integer(rev(names(salso_obj %>% table %>% sort)))], "pipe")
 
-knitr::kable(exposures[not_have_opium_sig, as.integer(rev(names(tail(salso_obj %>% table %>% sort, 20))))], "pipe")
+knitr::kable(exposures[not_have_opium_sig, as.integer(rev(names(salso_obj %>% table %>% sort)))], "pipe")
 
-#### knitr::kable(cbind(patient_country$country, exposures[, as.integer(rev(names(tail(salso_obj %>% table %>% sort, 20))))]), "pipe")
+iranian_patients <- cumsum(npatients_by_country$n)[c(which(countries == "Iran")-1, which(countries == "Iran"))]
+iranian_patients <- (cumsum(npatients_by_country$n)[which(countries == "Iran")-1]+1):cumsum(npatients_by_country$n)[which(countries == "Iran")]
+
+exposures_paper_iran <- read.csv("data/escc_published_exposures_iran.csv", header = TRUE, row.names = 1)
+exposures_paper_iran[, "Sig 15"] <- exposures[rownames(exposures_paper_iran), "Sig 15"]
+### plot(
+###   exposures_paper_iran[, "SBS288J"],
+###   exposures_paper_iran[, "Sig 15"]
+### )
+### text(
+###   exposures_paper_iran[, "SBS288J"],
+###   exposures_paper_iran[, "Sig 15"],
+###   labels = rownames(exposures_paper_iran), pos = 4
+### )
+
+exposures_paper_iran <- read.csv("data/escc_published_exposures_iran.csv", header = TRUE, row.names = 1)
+exposures_paper_iran <- as.data.frame(
+  diag(1/rowSums(exposures_paper_iran)) %*% as.matrix(exposures_paper_iran),
+  row.names = rownames(exposures_paper_iran)
+)
+
+exposures <- as.data.frame(
+  diag(1/rowSums(exposures)) %*% as.matrix(exposures),
+  row.names = rownames(exposures)
+)
+exposures_paper_iran[, "Sig 15"] <- exposures[rownames(exposures_paper_iran), "Sig 15"]
+plot(
+  exposures_paper_iran[, "SBS288J"],
+  exposures_paper_iran[, "Sig 15"]
+)
+text(
+  exposures_paper_iran[, "SBS288J"],
+  exposures_paper_iran[, "Sig 15"],
+  labels = rownames(exposures_paper_iran), pos = 4
+)
+
+exposures_paper_all <- read.csv("data/escc_published_exposures_all.csv", header = TRUE, row.names = 1)
+exposures_paper_all <- as.data.frame(
+  diag(1/rowSums(exposures_paper_all)) %*% as.matrix(exposures_paper_all),
+  row.names = rownames(exposures_paper_all)
+)
+
+exposures[, "SBS288L"] <- exposures_paper_all[rownames(exposures), "SBS288L"]
+exposures[, "col"] <- 1
+exposures[not_have_opium_sig, "col"] <- 2
+exposures[have_opium_sig, "col"] <- 3
+for (i in 1:25) {
+  plot(
+    exposures[, "SBS288L"],
+    exposures[, paste("Sig", i)],
+    xlab = "SBS288L",
+    ylab = paste("Sig", i),
+    col = exposures[, "col"],
+    pch = 19
+  )
+  ## text(
+  ##   exposures[, "SBS288L"],
+  ##   exposures[, paste("Sig", i)],
+  ##   labels = rownames(exposures), pos = 4
+  ## )
+}
