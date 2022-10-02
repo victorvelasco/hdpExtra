@@ -5,7 +5,10 @@
 .DS_Store
 dev/output/*
 dev/plots/*
-output/*
+output/*rds
+output/alexandrov_syn_i/*
+output/escc/*
+output/glioblastoma/*
 src/*.o
 src/*.so
 src/*.dll
