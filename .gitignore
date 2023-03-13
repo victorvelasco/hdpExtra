@@ -3,12 +3,17 @@
 .RData
 .Ruserdata
 .DS_Store
+glioblastoma_exome_analysis.R
+prostate_pcawg_analysis.R
+data/*
+dev/*
 dev/output/*
 dev/plots/*
 output/*rds
 output/alexandrov_syn_i/*
 output/escc/*
 output/glioblastoma/*
+output/pcawg_dbs/*
 src/*.o
 src/*.so
 src/*.dll
