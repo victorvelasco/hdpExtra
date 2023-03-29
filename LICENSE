@@ -5,7 +5,7 @@
 # This program is distributed under the terms of GNU GPL v3, and it comes with
 # no warranty of any kind
 #
-# This R package contains R code written by Nicola Roberts, downloadable from https://github.com/nicolaroberts/
+# This R package contains R code written by Nicola Roberts, downloadable from https://github.com/nicolaroberts/hdp
 # as well as C code written by Yee Whye Teh and downloadable from
 # http://www.stats.ox.ac.uk/~teh/research/npbayes/npbayes-r21.tgz
 #
@@ -49,9 +49,8 @@
 File: R/aaa-generics-input.R
 Copyright: 2015 Nicola D Roberts
 
-
 File: R/hdpExtra_classes.R
-Copyright: 2022 Victor Velasco-Pardo
+Copyright: 2023 Victor Velasco-Pardo
 
 File: R/iterate.R
 Copyright: 2004 Yee Whye Teh
@@ -59,28 +58,28 @@ Copyright: 2004 Yee Whye Teh
 Comment: Copied from R/iterate.R by Nicola Roberts
 
 File: R/hdp_plot_sig_uncertainty.R
-Copyright: 2022 Victor Velasco-Pardo
+Copyright: 2023 Victor Velasco-Pardo
 
 
 File: R/hdp_postprocessing.R
-Copyright: 2022 Victor Velasco-Pardo
+Copyright: 2023 Victor Velasco-Pardo
 
 
 File: R/hdp_sample_cluster_params.R
-Copyright: 2022 Victor Velasco-Pardo
+Copyright: 2023 Victor Velasco-Pardo
 
 
 File: R/hdp_getstate.R
 Copyright: 2004 Yee Whye Teh
            2015 Nicola D Roberts
-           2022 Victor Velasco-Pardo
+           2023 Victor Velasco-Pardo
 Comment: Copy of hdp_getstate.R by Nicola Roberst
 
 
 File: R/hdpExtra_posterior.R
 Copyright: 2004 Yee Whye Teh
            2015 Nicola D Roberts
-           2022 Victor Velasco-Pardo
+           2023 Victor Velasco-Pardo
 Comment: Copy of hdp_posterior.R by Nicola Roberts, with minor add-ons
 
 File: src/R-base.c
