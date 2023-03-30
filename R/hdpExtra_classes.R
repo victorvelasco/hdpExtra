@@ -1,9 +1,15 @@
 #' An S4 class to store an MCMC chain
 #'
-#' @slot hdpChain An hdpSampleChain object for integration with the hdp package
-#' @slot allocations A matrix where each column is a partition of the
-#' observations sampled from the posterior distribution
+#' @slot hdpChain An object of class hdp::hdpSampleChain for integration with the hdp package
+#' @slot allocations A matrix whose colums are partitions (as vectors of labels) of the
+#' observations sampled from the posterior distribution and rows index iterations
+#' of the MCMC sampler
+#' @slot cp_values A matrix containing the values of the concentration parameters drawn
+#' across iterations of the sampler
 #' @slot Phi A list whose elements are draws from the posterior over signature parameters
+#' @slot niter Number of MCMC draws that are saved to memory
+#' @slot burnin Number of MCMC draws that are discarded in the burnin period
+#' @slot thin Thinning parameter
 #' @importClassesFrom hdp hdpSampleChain
 #' @export
 setClass("HdpExtraChain",
@@ -20,10 +26,15 @@ setClass("HdpExtraChain",
 
 #' An S4 class to store multiple MCMC chains
 #'
-#' @slot hdpChains An hdpSampleMulti object for integration with the hdp package
+#' @slot hdpChains An hdp::hdpSampleMulti object for integration with the hdp package
+#' @slot cp_values A list of matrices containing the values of the concentration parameters drawn
+#' across iterations of the sampler
 #' @slot allocations A matrix where each column is a partition of the
 #' observations sampled from the posterior distribution
 #' @slot Phi A list whose elements are draws from the posterior over signature parameters
+#' @slot niter Number of MCMC draws that are saved to memory
+#' @slot burnin Number of MCMC draws that are discarded in the burnin period
+#' @slot thin Thinning parameter
 #' @importClassesFrom hdp hdpSampleMulti
 #' @export
 setClass("HdpExtraChainMulti",

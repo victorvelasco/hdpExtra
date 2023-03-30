@@ -1,4 +1,4 @@
-
+# Function for internal use
 hdp_sample_cluster_params <- function(classqq) {
   K <- ncol(classqq) # Number of clusters
   V <- nrow(classqq) # Number of categories
