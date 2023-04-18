@@ -503,8 +503,8 @@ void hdp_save_allocations(HDP *hdp, int *allocations) {
 
 /***************************************************************************/
 void hdp_iterate(HDP *hdp, double *iterlik,
-    int numiter, int numcp, int doconparam, int dolik, int *allocations, double *conparam) {
-  BASE *base;
+    int numiter, int numcp, int doconparam, int dolik, int *allocations, double *conparam, int *numclust) {
+  BASE  *base;
   QQ *classqq;
   DP *alldp;
   int numdp, *dpstate;
@@ -672,8 +672,8 @@ void hdp_dpholdout(HDP *hdp, int jj) {
 // void hdp_predict(HDP *hdp, double *lik, int numburnin, int numsample,
 //     int numpredict, int *predictjj, int doconparam) {
 //   int jj;
-// 
-// 
+//
+//
 //   for ( jj = 0 ; jj < numpredict ; jj++ )
 //     hdp_dpholdout(hdp,predictjj[jj]);
 //   for ( jj = 0 ; jj < numpredict ; jj++ ) {
@@ -685,6 +685,6 @@ void hdp_dpholdout(HDP *hdp, int jj) {
 //   }
 //   for ( jj = 0 ; jj < numpredict ; jj++ )
 //     hdp_dpactivate(hdp,predictjj[jj]);
-// 
+//
 // }
 

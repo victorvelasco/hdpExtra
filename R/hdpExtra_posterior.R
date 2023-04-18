@@ -39,6 +39,7 @@ hdpExtra_posterior <- function(hdp, burnin, n, space, cpiter=1,
 
   # initialise concentration parameters matrix
   cp_values <- matrix(0, nrow = hdp::numconparam(hdp), ncol = totiter)
+  nclust    <- rep(0, totiter)
 
 
   # translate hdp hdpState (S4 class) to plain list so C code can parse
@@ -60,6 +61,7 @@ hdpExtra_posterior <- function(hdp, burnin, n, space, cpiter=1,
   hdplist <- output[[1]]
   lik[1:burnin] <- output[[2]]
   cp_values[, 1:burnin] <- output[[3]]
+  nclust[1:burnin] <- output[[4]]
 
 
 
@@ -80,6 +82,7 @@ hdpExtra_posterior <- function(hdp, burnin, n, space, cpiter=1,
     lik[burnin + (samp-1) * space + (1:space)] <- output[[2]]
     cp_values[, burnin + (samp-1) * space + (1:space)] <- output[[3]]
     allocations[, samp] <- output[[4]] + 1
+    niter[, burnin + (samp-1) * space + (1:space)] <- output[[5]]
 
     sample[[samp]] <- hdp_getstate(hdplist)
     Phi[[samp]] <- hdp_sample_cluster_params(hdplist$base$classqq)
@@ -142,6 +145,7 @@ hdpExtra_posterior <- function(hdp, burnin, n, space, cpiter=1,
              Phi = Phi,
              niter = totiter,
              burnin = burnin,
-             thin = space)
+             thin = space,
+             nclust = nclust)
   return(ans)
 }

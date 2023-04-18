@@ -1,7 +1,7 @@
 ---
 title: "Quantifying uncertainty inmutational signare analyses with hdpExtra"
 author: "Víctor Velasco-Pardo"
-date: "Jun  e 2022"
+date: "March 2023"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Quantifying uncertainty in mutational signare analyses with hdpExtra}
@@ -26,7 +26,7 @@ library(salso)
 set.seed(1)
 ```
 
-# Extraction of mutational signatures
+# Set up using the hdp package
 
 ## Matrix of mutation counts
 
@@ -83,8 +83,8 @@ for (i in 1:2){
   hdp_activated <- hdp::dp_activate(hdp_mut, 1:numdp(hdp_mut), initcc=10, seed=i*200)
 
   chlist[[i]] <- hdpExtra_posterior(hdp_activated,
-                               burnin=1000,
-                               n=100,
+                               burnin=100,
+                               n=10,
                                space=10,
                                cpiter=3,
                                seed=i*1e3)

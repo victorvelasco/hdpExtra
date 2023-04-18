@@ -10,6 +10,7 @@
 #' @slot niter Number of MCMC draws that are saved to memory
 #' @slot burnin Number of MCMC draws that are discarded in the burnin period
 #' @slot thin Thinning parameter
+#' @slot nclust Number of clusters across iterations of the sampler
 #' @importClassesFrom hdp hdpSampleChain
 #' @export
 setClass("HdpExtraChain",
@@ -20,7 +21,8 @@ setClass("HdpExtraChain",
     Phi = "list",
     niter = "numeric",
     burnin = "numeric",
-    thin = "numeric"
+    thin = "numeric",
+    nclust = "numeric"
   )
 )
 
@@ -35,6 +37,7 @@ setClass("HdpExtraChain",
 #' @slot niter Number of MCMC draws that are saved to memory
 #' @slot burnin Number of MCMC draws that are discarded in the burnin period
 #' @slot thin Thinning parameter
+#' @slot nclust Number of clusters across iterations of the sampler
 #' @importClassesFrom hdp hdpSampleMulti
 #' @export
 setClass("HdpExtraChainMulti",
@@ -45,7 +48,8 @@ setClass("HdpExtraChainMulti",
     Phi = "list",
     niter = "numeric",
     burnin = "numeric",
-    thin = "numeric"
+    thin = "numeric",
+    nclust = "numeric"
   )
 )
 
