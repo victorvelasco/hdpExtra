@@ -541,7 +541,10 @@ void hdp_iterate(HDP *hdp, double *iterlik,
       conparam += numcp;
     }
 
-    if ( dolik == 1 ) iterlik[iter] = hdp_likelihood(hdp);
+    if ( dolik == 1 ) {
+      iterlik[iter] = hdp_likelihood(hdp);
+      numclust[iter] = base->numclass;
+    }
 
     rdebug0(1,"\n");
   } /* iter */

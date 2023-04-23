@@ -49,7 +49,7 @@ setClass("HdpExtraChainMulti",
     niter = "numeric",
     burnin = "numeric",
     thin = "numeric",
-    nclust = "numeric"
+    nclust = "list"
   )
 )
 
@@ -75,7 +75,9 @@ HdpExtraChainMulti <- function(hdpExtraChains) {
     Phi = Phi,
     niter = sapply(hdpExtraChains, function(x) x@niter),
     burnin = sapply(hdpExtraChains, function(x) x@burnin),
-    thin = sapply(hdpExtraChains, function(x) x@thin)
+    thin = sapply(hdpExtraChains, function(x) x@thin),
+    nclust = lapply(hdpExtraChains,
+                    function(chain) coda::as.mcmc(chain@nclust))
   )
 }
 
